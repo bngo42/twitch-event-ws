@@ -1,0 +1,25 @@
+{
+  "name": "twitch-events",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "nodejs app for monitoring twitch channel events",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "twitch",
+    "events",
+    "socket"
+  ],
+  "author": "bngo",
+  "license": "ISC",
+  "dependencies": {
+    "@twurple/api": "^8.0.2",
+    "@twurple/auth": "^8.0.2",
+    "@twurple/eventsub-ws": "^8.0.2",
+    "dotenv": "^17.2.3",
+    "ws": "^8.19.0"
+  }
+}

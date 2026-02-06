@@ -1,88 +1,43 @@
-import { broadcast } from './ws/ws-client.js';
+import { handleEventMessage } from './ws/ws-client.js';
 import { getAuthClient } from './auth-provider.js';
-import { getEventListeners } from './events.js';
-
-const handleEventMessage = (type, data) => {
-    const payload = {
-        type,
-        data,
-        timestamp: new Date().toISOString()
-    };
-    broadcast(payload);
-};
+import { EventSubWsListener } from '@twurple/eventsub-ws';
 
 export async function registerTwitchListeners(userId, clientId, clientSecret) {
     const apiClient = await getAuthClient(userId, clientId, clientSecret);
-    const listener = await getEventListeners({ apiClient });
+    const listener = await new EventSubWsListener({ apiClient })
+
+    listener.onUserSocketConnect((id) => {
+        console.log('Connected to Twitch Event Socket');
+    })
 
     listener.onChannelChatMessage(userId, userId, (e) => {
         handleEventMessage('CHAT_MESSAGE', {
-            userId: e.chatterId,
-            userName: e.chatterName,
-            displayName: e.chatterDisplayName,
+            user_id: e.chatterId,
+            user_name: e.chatterName,
+            display_name: e.chatterDisplayName,
             text: e.messageText,
             color: e.color,
-            isCheer: e.isCheer,
-            bits: e.bits
-        });
-    });
-
-    listener.onChannelFollow(userId, userId, (e) => {
-        handleEventMessage('FOLLOW', {
-            userId: e.userId,
-            userName: e.userName,
-            displayName: e.userDisplayName,
-            followDate: e.followDate
+            badges: e.badges,
         });
     });
 
     listener.onChannelCheer(userId, (e) => {
         handleEventMessage('BITS', {
-            userId: e.userId,
-            userName: e.userName,
+            user_id: e.userId,
+            user_name: e.userName,
             bits: e.bits,
             message: e.message
-        });
-    });
-
-    listener.onChannelSubscription(userId, (e) => {
-        handleEventMessage('SUB', {
-            userId: e.userId,
-            userName: e.userName,
-            tier: e.tier,
-            isGift: e.isGift
-        });
-    });
-
-    listener.onChannelSubscriptionMessage(userId, (e) => {
-        handleEventMessage('RESUB', {
-            userId: e.userId,
-            userName: e.userName,
-            tier: e.tier,
-            durationMonths: e.cumulativeMonths,
-            streakMonths: e.streakMonths,
-            message: e.messageText
-        });
-    });
-
-    listener.onChannelSubscriptionGift(userId, (e) => {
-        handleEventMessage('SUB_GIFT', {
-            gifterId: e.gifterId,
-            gifterName: e.gifterName,
-            amount: e.amount,
-            tier: e.tier,
-            isAnonymous: e.isAnonymous
         });
     });
 
     listener.onChannelRedemptionAdd(userId, (e) => {
         handleEventMessage('REDEMPTION', {
             id: e.id,
-            userId: e.userId,
-            userName: e.userName,
-            rewardId: e.rewardId,
-            rewardTitle: e.rewardTitle,
-            rewardCost: e.rewardCost,
+            user_id: e.userId,
+            user_name: e.userName,
+            reward_id: e.rewardId,
+            reward_title: e.rewardTitle,
+            reward_cost: e.rewardCost,
             input: e.input
         });
     });
@@ -92,7 +47,7 @@ export async function registerTwitchListeners(userId, clientId, clientSecret) {
             id: e.id,
             title: e.title,
             choices: e.choices.map(c => ({ id: c.id, title: c.title })),
-            endDate: e.endDate
+            end_date: e.endDate
         });
     });
 
@@ -111,7 +66,7 @@ export async function registerTwitchListeners(userId, clientId, clientSecret) {
             id: e.id,
             title: e.title,
             outcomes: e.outcomes.map(o => ({ id: o.id, title: o.title, color: o.color })),
-            lockDate: e.lockDate
+            lock_date: e.lockDate
         });
     });
 
@@ -120,10 +75,12 @@ export async function registerTwitchListeners(userId, clientId, clientSecret) {
             handleEventMessage('PREDICTION_END', {
                 id: e.id,
                 status: e.status,
-                winningOutcomeId: e.winningOutcomeId
+                winning_outcome_id: e.winningOutcomeId
             });
         }
     });
+
+    listener.start();
 
     return listener;
 }

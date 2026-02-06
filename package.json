@@ -20,6 +20,8 @@
     "@twurple/auth": "^8.0.2",
     "@twurple/eventsub-ws": "^8.0.2",
     "dotenv": "^17.2.3",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3",
     "ws": "^8.19.0"
   }
 }

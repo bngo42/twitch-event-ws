@@ -1,19 +1,17 @@
-const WS_OPEN = 1;
-const clients = new Set();
-
-export const registerClient = (socket) => {
-  clients.add(socket);
-};
-
-export const unregisterClient = (socket) => {
-  clients.delete(socket);
-};
+import { io } from './ws-server.js';
 
 export const broadcast = (payload) => {
-  const data = JSON.stringify(payload);
-  clients.forEach(client => {
-    if (client.readyState === WS_OPEN) {
-      client.send(data);
-    }
-  });
+  if (!io || !payload) return;
+
+  io.emit(payload);
+};
+
+export const handleEventMessage = (type, data) => {
+    const payload = {
+        type,
+        data,
+        timestamp: new Date().toISOString()
+    };
+    console.log(payload);
+    broadcast(payload);
 };

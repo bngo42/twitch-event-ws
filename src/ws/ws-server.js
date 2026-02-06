@@ -1,18 +1,21 @@
-import { WebSocketServer } from 'ws';
-import { registerClient, unregisterClient } from './ws-client.js';
+import { Server } from 'socket.io';
 
-export function createWsServer(port = 8080) {
-  const wss = new WebSocketServer({ port });
+let io;
 
-  wss.on('connection', (socket) => {
-    registerClient(socket);
-    socket.send(JSON.stringify({ type: 'welcome', message: 'Connected to ws' }));
-
-    socket.on('close', () => {
-      unregisterClient(socket);
-    });
+export function createWsServer(port = 8083) {
+  io = new Server(port, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"]
+    }
   });
 
-  console.log(`WebSocket server started on port ${port}`);
-  return wss;
+  io.on('connection', (socket) => {
+    socket.emit('message', { type: 'welcome', message: 'Connected to Socket.io' });
+  });
+
+  console.log(`Socket server started on port ${port}`);
+  return io;
 }
+
+export { io };

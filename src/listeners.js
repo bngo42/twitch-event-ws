@@ -4,11 +4,11 @@ import { EventSubWsListener } from '@twurple/eventsub-ws';
 
 export async function registerTwitchListeners(userId, clientId, clientSecret) {
     const apiClient = await getAuthClient(userId, clientId, clientSecret);
-    const listener = await new EventSubWsListener({ apiClient })
+    const listener = new EventSubWsListener({ apiClient });
 
     listener.onUserSocketConnect((id) => {
-        console.log('Connected to Twitch Event Socket');
-    })
+        console.log('Connected to Twitch events');
+    });
 
     listener.onChannelChatMessage(userId, userId, (e) => {
         handleEventMessage('CHAT_MESSAGE', {
@@ -18,15 +18,6 @@ export async function registerTwitchListeners(userId, clientId, clientSecret) {
             text: e.messageText,
             color: e.color,
             badges: e.badges,
-        });
-    });
-
-    listener.onChannelCheer(userId, (e) => {
-        handleEventMessage('BITS', {
-            user_id: e.userId,
-            user_name: e.userName,
-            bits: e.bits,
-            message: e.message
         });
     });
 
@@ -56,7 +47,10 @@ export async function registerTwitchListeners(userId, clientId, clientSecret) {
             handleEventMessage('POLL_END', {
                 id: e.id,
                 status: e.status,
-                choices: e.choices.map(c => ({ title: c.title, totalVotes: c.totalVotes }))
+                choices: e.choices.map(c => ({ 
+                    title: c.title, 
+                    total_votes: c.totalVotes 
+                }))
             });
         }
     });
@@ -65,7 +59,11 @@ export async function registerTwitchListeners(userId, clientId, clientSecret) {
         handleEventMessage('PREDICTION_START', {
             id: e.id,
             title: e.title,
-            outcomes: e.outcomes.map(o => ({ id: o.id, title: o.title, color: o.color })),
+            outcomes: e.outcomes.map(o => ({ 
+                id: o.id, 
+                title: o.title, 
+                color: o.color 
+            })),
             lock_date: e.lockDate
         });
     });

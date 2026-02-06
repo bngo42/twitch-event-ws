@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "nodejs app for monitoring twitch channel events",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js"
@@ -21,7 +21,6 @@
     "@twurple/eventsub-ws": "^8.0.2",
     "dotenv": "^17.2.3",
     "socket.io": "^4.8.3",
-    "socket.io-client": "^4.8.3",
-    "ws": "^8.19.0"
+    "socket.io-client": "^4.8.3"
   }
 }

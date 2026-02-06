@@ -12,6 +12,5 @@ export const handleEventMessage = (type, data) => {
         data,
         timestamp: new Date().toISOString()
     };
-    console.log(payload);
     broadcast(payload);
 };

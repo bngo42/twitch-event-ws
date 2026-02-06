@@ -3,22 +3,65 @@ import { handleEventMessage } from "./ws/ws-client.js";
 
 export function handleDonation(data) {
   handleEventMessage('DONATION', {
-    ...data
+    id: data.id,
+    name: data.name,
+    amount: data.amount,
+    currency: data.currency,
+    message: data.message,
+    from: data.from,
+    from_user_id: data.from_user_id
   });
 }
+
 export function handleFollow(data) {
   handleEventMessage('FOLLOW', {
-    ...data
+    name: data.name
   });
 }
-export function handleSubscription(data) {
+
+export function handleNewSubscription(data) {
   handleEventMessage('SUB', {
-    ...data
+    name: data.name,
+    months: data.months,
+    message: data.message,
+    sub_plan: data.sub_plan,
   });
 }
+
+export function handleResubscription(data) {
+  handleEventMessage('RESUB', {
+    name: data.name,
+    months: data.months,
+    streak_months: data.streak_months,
+    message: data.message,
+    sub_plan: data.sub_plan,
+  });
+}
+
+export function handleSubGift(data) {
+  handleEventMessage('SUB_GIFT', {
+    name: data.name, 
+    gifter: data.gifter, 
+    months: data.months,
+    sub_plan: data.sub_plan,
+    message: data.message
+  });
+}
+
+export function handleCommunityGift(data) {
+  handleEventMessage('COMMUNITY_GIFT', {
+    name: data.name, 
+    amount: data.amount, 
+    sub_plan: data.sub_plan,
+  });
+}
+
 export function handleBits(data) {
   handleEventMessage('BITS', {
-    ...data
+    name: data.name,
+    amount: data.amount,
+    message: data.message,
+    total_bits: data.total_bits
   });
 }
 
@@ -28,29 +71,37 @@ export function initStreamlabs(STREAMLABS_SOCKET_TOKEN) {
     });
 
     streamlabsSocket.on('connect', () => {
-      console.log('Connected to Streamlabs Event Socket');
+      console.log('Connected to Streamlabs events');
     });
 
     streamlabsSocket.on('event', (eventData) => {
-      if (!eventData.message) return;
-
+      if (!eventData.message || eventData.message.length === 0) return;
+      
       const type = eventData.type.toUpperCase();
-      console.log(eventData);
+      const message = eventData.message[0];
 
       switch(type) {
         case 'DONATION':
-          handleDonation(eventData.message);
+          handleDonation(message);
           break;
         case 'FOLLOW':
-          handleFollow(eventData.message);
+          handleFollow(message);
+          break;
+        case 'SUBMYSTERYGIFT':
+          handleCommunityGift(message);
+          break;
+        case 'SUBSCRIPTION':
+          if (message.sub_type === 'subgift') {
+            handleSubGift(message);
+          } else {
+            handleNewSubscription(message);
+          }
           break;
         case 'RESUB':
-        case 'SUBSCRIPTION':
-        case 'SUBMYSTERYGIFT':
-          handleSubscription(eventData.message);
+          handleResubscription(message);
           break;
         case 'BITS':
-          handleBits(eventData.message);
+          handleBits(message);
           break;
       }
     });

@@ -33,9 +33,7 @@ npm install
 ```env
 TWITCH_CLIENT_ID=your_client_id
 TWITCH_SECRET=your_client_secret
-
 TWITCH_USER_ID=your_user_id
-
 STREAMLABS_SOCKET_TOKEN=your_streamlabs_socket_token
 ```
 
@@ -84,157 +82,9 @@ The application requires the following Twitch API scopes:
 3. **Event Handling**: Listens for specific events and logs them to the console
 4. **Token Persistence**: Saves refreshed tokens to disk for future use
 
+## Events
 
-# Events Documentation
-
-### `CHAT_MESSAGE`
-```json
-{
-  "user_id": "string",
-  "user_name": "string",
-  "display_name": "string",
-  "text": "string",
-  "color": "string",
-  "badges": "object"
-}
-```
-
-### `REDEMPTION`
-```json
-{
-  "id": "string",
-  "user_id": "string",
-  "user_name": "string",
-  "reward_id": "string",
-  "reward_title": "string",
-  "reward_cost": "number",
-  "input": "string"
-}
-```
-### `POLL_START`
-```json
-{
-  "id": "string",
-  "title": "string",
-  "choices": [
-    {
-      "id": "string",
-      "title": "string"
-    }
-  ],
-  "end_date": "Date"
-}
-```
-### `POLL_END`
-```json
-{
-  "id": "string",
-  "status": "string",
-  "choices": [
-    {
-      "title": "string",
-      "total_votes": "number"
-    }
-  ]
-}
-```
-### `PREDICTION_START`
-```json
-{
-  "id": "string",
-  "title": "string",
-  "outcomes": [
-    {
-      "id": "string",
-      "title": "string",
-      "color": "string"
-    }
-  ],
-  "lock_date": "Date"
-}
-```
-### `PREDICTION_END`
-```json
-{
-  "id": "string",
-  "status": "string",
-  "winning_outcome_id": "string"
-}
-```
-
-### `DONATION`
-```json
-{
-  "id": "number",
-  "name": "string",
-  "amount": "number",
-  "currency": "string",
-  "message": "string",
-  "from": "string",
-  "from_user_id": "string"
-}
-```
-
-### `FOLLOW`
-```json
-{
-  "name": "string"
-}
-```
-
-### `SUB`
-```json
-{
-  "name": "string",
-  "months": "number",
-  "message": "string",
-  "sub_plan": "string",
-  "is_test": "boolean"
-}
-```
-
-### `RESUB`
-```json
-{
-  "name": "string",
-  "months": "number",
-  "streak_months": "number",
-  "message": "string",
-  "sub_plan": "string",
-  "is_test": "boolean"
-}
-```
-
-### `SUB_GIFT`
-```json
-{
-  "name": "string", 
-  "gifter": "string", 
-  "months": "number",
-  "sub_plan": "string",
-  "message": "string"
-}
-```
-
-### `COMMUNITY_GIFT`
-```json
-{
-  "name": "string", 
-  "amount": "number", 
-  "sub_plan": "string",
-  "id": "string"
-}
-```
-
-### `BITS`
-```json
-{
-  "name": "string",
-  "amount": "number",
-  "message": "string",
-  "total_bits": "number"
-}
-```
+See [EVENTS.md](./EVENTS.md) for more informations on how to handle events
 
 ## License
 

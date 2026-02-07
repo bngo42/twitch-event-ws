@@ -11,7 +11,7 @@ export function createWsServer(port = 8083) {
   });
 
   io.on('connection', (socket) => {
-    socket.emit('message', { type: 'welcome', message: 'Connected to Socket.io' });
+    socket.emit('message', { type: 'welcome', message: 'Connected to the socket server' });
   });
 
   console.log(`Socket server started on port ${port}`);

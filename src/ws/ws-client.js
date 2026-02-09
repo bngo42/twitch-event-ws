@@ -3,7 +3,8 @@ import { io } from './ws-server.js';
 export const broadcast = (payload) => {
     if (!io || !payload) return;
 
-    io.emit('message', JSON.parse(JSON.stringify(payload)));
+    const data = JSON.parse(JSON.stringify(payload));
+    io.emit('message', data);
 };
 
 export const handleEventMessage = (type, data) => {

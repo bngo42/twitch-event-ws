@@ -1,6 +1,7 @@
 import { handleEventMessage } from './ws/ws-client.js';
 import { getAuthClient } from './auth-provider.js';
 import { EventSubWsListener } from '@twurple/eventsub-ws';
+import { BOT_USERNAMES } from './config.js';
 
 export async function registerTwitchListeners(userId, clientId, clientSecret) {
     const apiClient = await getAuthClient(userId, clientId, clientSecret);
@@ -11,6 +12,10 @@ export async function registerTwitchListeners(userId, clientId, clientSecret) {
     });
 
     listener.onChannelChatMessage(userId, userId, (e) => {
+        if (BOT_USERNAMES.includes(e.chatterName)) {
+            return;
+        }
+
         handleEventMessage('CHAT_MESSAGE', {
             user_id: e.chatterId,
             user_name: e.chatterName,
@@ -18,6 +23,8 @@ export async function registerTwitchListeners(userId, clientId, clientSecret) {
             text: e.messageText,
             color: e.color,
             badges: e.badges,
+            parent_message_username: e.parentMessageUserName,
+            parent_message_text: e.parentMessageText,
         });
     });
 

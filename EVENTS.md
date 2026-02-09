@@ -31,7 +31,9 @@ The data provided in the message will depends on the event type, here's a list o
   "display_name": "string",
   "text": "string",
   "color": "string",
-  "badges": "object"
+  "badges": "object",
+  "parent_message_username": "string",
+  "parent_message_text": "string",
 }
 ```
 

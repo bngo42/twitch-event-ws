@@ -4,7 +4,7 @@ import { handleEventMessage } from "./ws/ws-client.js";
 export function handleDonation(data) {
   handleEventMessage('DONATION', {
     id: data.id,
-    name: data.name,
+    user_name: data.name,
     amount: data.amount,
     currency: data.currency,
     message: data.message,
@@ -15,13 +15,13 @@ export function handleDonation(data) {
 
 export function handleFollow(data) {
   handleEventMessage('FOLLOW', {
-    name: data.name
+    user_name: data.name
   });
 }
 
 export function handleNewSubscription(data) {
   handleEventMessage('SUB', {
-    name: data.name,
+    user_name: data.name,
     months: data.months,
     message: data.message,
     sub_plan: data.sub_plan,
@@ -30,7 +30,7 @@ export function handleNewSubscription(data) {
 
 export function handleResubscription(data) {
   handleEventMessage('RESUB', {
-    name: data.name,
+    user_name: data.name,
     months: data.months,
     streak_months: data.streak_months,
     message: data.message,
@@ -40,7 +40,7 @@ export function handleResubscription(data) {
 
 export function handleSubGift(data) {
   handleEventMessage('SUB_GIFT', {
-    name: data.name, 
+    user_name: data.name, 
     gifter: data.gifter, 
     months: data.months,
     sub_plan: data.sub_plan,
@@ -50,7 +50,7 @@ export function handleSubGift(data) {
 
 export function handleCommunityGift(data) {
   handleEventMessage('COMMUNITY_GIFT', {
-    name: data.name, 
+    user_name: data.name, 
     amount: data.amount, 
     sub_plan: data.sub_plan,
   });
@@ -58,7 +58,7 @@ export function handleCommunityGift(data) {
 
 export function handleBits(data) {
   handleEventMessage('BITS', {
-    name: data.name,
+    user_name: data.name,
     amount: data.amount,
     message: data.message,
     total_bits: data.total_bits

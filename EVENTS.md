@@ -104,7 +104,7 @@ The data provided in the message will depends on the event type, here's a list o
 ```json
 {
   "id": "number",
-  "name": "string",
+  "user_name": "string",
   "amount": "number",
   "currency": "string",
   "message": "string",
@@ -116,14 +116,14 @@ The data provided in the message will depends on the event type, here's a list o
 ### `FOLLOW`
 ```json
 {
-  "name": "string"
+  "user_name": "string"
 }
 ```
 
 ### `SUB`
 ```json
 {
-  "name": "string",
+  "user_name": "string",
   "months": "number",
   "message": "string",
   "sub_plan": "string",
@@ -133,7 +133,7 @@ The data provided in the message will depends on the event type, here's a list o
 ### `RESUB`
 ```json
 {
-  "name": "string",
+  "user_name": "string",
   "months": "number",
   "streak_months": "number",
   "message": "string",
@@ -144,7 +144,7 @@ The data provided in the message will depends on the event type, here's a list o
 ### `SUB_GIFT`
 ```json
 {
-  "name": "string", 
+  "user_name": "string", 
   "gifter": "string", 
   "months": "number",
   "sub_plan": "string",
@@ -155,7 +155,7 @@ The data provided in the message will depends on the event type, here's a list o
 ### `COMMUNITY_GIFT`
 ```json
 {
-  "name": "string", 
+  "user_name": "string", 
   "amount": "number", 
   "sub_plan": "string",
   "id": "string"
@@ -165,7 +165,7 @@ The data provided in the message will depends on the event type, here's a list o
 ### `BITS`
 ```json
 {
-  "name": "string",
+  "user_name": "string",
   "amount": "number",
   "message": "string",
   "total_bits": "number"
